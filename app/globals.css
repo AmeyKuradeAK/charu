@@ -1,26 +1,214 @@
+
 @import "tailwindcss";
 
+/* Root brand tokens */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --text: #181818; /* deep black */
+  --accent: #FFCF25; /* vibrant yellow */
+  --cta: #FFBF00; /* CTA button */
+  --charcoal: #212121;
+  --subtle: #F6F6F6;
+  --cta-ring: rgba(255, 191, 0, 0.18);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --text: #ededed;
   }
+}
+
+html, body, #__next {
+  height: 100%;
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Ensure links and text that use custom vars have fallback color for older browsers */
+a, .text-var-text {
+  color: var(--text, #181818);
+}
+
+.text-var-charcoal { color: var(--charcoal, #212121); }
+
+/* Loader dots */
+.loader-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  animation: loader-bounce 720ms infinite ease-in-out;
+}
+
+@keyframes loader-bounce {
+  0% { transform: translateY(0); opacity: .3 }
+  50% { transform: translateY(-6px); opacity: 1 }
+  100% { transform: translateY(0); opacity: .3 }
+}
+
+/* CTA shadow + glow */
+.shadow-cta { box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+.hover\:shadow-cta-glow:hover { box-shadow: 0 8px 30px rgba(255,191,0,0.18); }
+
+/* Decorative underline draw for hero headline */
+.underline-draw {
+  display: block;
+  height: 8px;
+  background: linear-gradient(90deg, transparent 0%, var(--accent) 100%);
+  width: 0;
+  transition: width 700ms cubic-bezier(.2,.9,.3,1);
+}
+.underline-draw.show { width: 220px; }
+
+/* Trainers section helpers */
+.trainer-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #FFCF25; }
+
+/* small transition helpers for images/info blocks */
+.trainer-img-anim { transition: transform 700ms cubic-bezier(.2,.9,.3,1), opacity 700ms ease; }
+.trainer-info-anim { transition: transform 700ms cubic-bezier(.2,.9,.3,1), opacity 700ms ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .trainer-img-anim, .trainer-info-anim { transition: none !important; }
+}
+
+/* Small helpers */
+.hero-cta-mobile { width: 100%; }
+.hero-cta-desktop { width: auto; }
+
+/* Heading hover animation: gentle color change + sweep */
+.hover-animate-yellow {
+  display: inline-block;
+  transition: color 220ms cubic-bezier(.2,.9,.3,1);
+}
+
+/* Only change color (and support keyboard focus) — remove sweep and lift per request */
+.hover-animate-yellow:hover,
+.hover-animate-yellow:focus-visible {
+  color: var(--accent);
+}
+
+/* Fill-from-bottom: animate text fill using background-clip */
+.fill-from-bottom {
+  display: inline-block;
+  position: relative;
+  /* base text color: white */
+  color: #ffffff;
+}
+
+/* Pseudo element holds the accent-colored copy and is revealed via clip-path */
+.fill-from-bottom::before {
+  content: attr(data-word);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--accent);
+  pointer-events: none;
+  /* hide initially by clipping the bottom area */
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 320ms cubic-bezier(.2,.9,.3,1);
+}
+
+.fill-from-bottom:hover::before,
+.fill-from-bottom:focus-visible::before {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Ensure keyboard users can see the effect */
+.fill-from-bottom:focus-visible { outline: none; }
+
+/* Page transition overlay (black -> white) */
+.transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff; /* start white */
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+/* Horizontal wipe: a gradient mask that translates from left to right */
+.transition-overlay .wipe-horizontal {
+  position: absolute;
+  inset: 0;
+  /* white-to-transparent wipe so the overlay smoothly reveals the underlying page */
+  background: linear-gradient(90deg, #fff 0%, #fff 50%, rgba(255,255,255,0) 50%, rgba(255,255,255,0) 100%);
+  transform: translateX(0%);
+  animation: wipeHorizontal 1400ms cubic-bezier(.2,.9,.3,1) forwards;
+}
+
+@keyframes wipeHorizontal {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Radial expansion: a radial gradient scale from center */
+.transition-overlay .wipe-radial {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 40%, #000 70%);
+  transform: scale(1);
+  animation: wipeRadial 1700ms cubic-bezier(.2,.9,.3,1) forwards;
+}
+
+@keyframes wipeRadial {
+  0% { transform: scale(0.6); opacity: 1; }
+  70% { transform: scale(1.05); opacity: .9; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* Removed yellow streaks per request — keeping class available if needed later */
+.transition-overlay .yellow-streaks { display: none; }
+
+/* Content inside the overlay: fade out in sync with wipe */
+.transition-overlay .overlay-content {
+  position: relative;
+  z-index: 10;
+  color: var(--text);
+  text-align: center;
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+.transition-overlay.animating .overlay-content {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition-duration: 1000ms;
+}
+
+/* Reduced motion: fallback to simple crossfade */
+@media (prefers-reduced-motion: reduce) {
+  .transition-overlay .wipe-horizontal,
+  .transition-overlay .wipe-radial,
+  .transition-overlay .yellow-streaks {
+    animation: none !important;
+    opacity: 0;
+  }
+
+  .transition-overlay { animation: fadeOutOverlay 900ms ease forwards; }
+
+  @keyframes fadeOutOverlay { to { opacity: 0; visibility: hidden } }
+}
+
+/* Courses: soft shadow + button pulse */
+.shadow-soft { box-shadow: 0 6px 18px rgba(0,0,0,0.04); }
+.btn-enroll { box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+.btn-enroll:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,191,0,0.12); }
+.btn-enroll:active { transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-enroll, .shadow-soft { transition: none !important; }
+}
+
+
+
