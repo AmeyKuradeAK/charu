@@ -25,7 +25,7 @@ const COURSES: Course[] = [
   },
   {
     id: "c3",
-    level: "Advanced+basic",
+    level: "Advanced",
     title: "Options & Derivatives",
     desc: "Advanced option strategies, hedging, and position management for active traders.",
   },
