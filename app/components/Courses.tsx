@@ -19,34 +19,17 @@ const COURSES: Course[] = [
   },
   {
     id: "c2",
-    level: "Beginner",
+    level: "Advanced",
     title: "Technical Patterns & Setups",
     desc: "High-probability setups and how to combine indicators into a working strategy.",
   },
   {
     id: "c3",
-    level: "Advanced",
+    level: "Advanced+basic",
     title: "Options & Derivatives",
     desc: "Advanced option strategies, hedging, and position management for active traders.",
   },
-  {
-    id: "c4",
-    level: "Advanced",
-    title: "Algo-Assisted Trading",
-    desc: "Introduction to automating strategies and backtesting practical systems.",
-  },
-  {
-    id: "c5",
-    level: "Beginner",
-    title: "Psychology & Risk Management",
-    desc: "Trade psychology, journaling, and risk sizing to protect capital and consistency.",
-  },
-  {
-    id: "c6",
-    level: "Advanced",
-    title: "Portfolio & Money Management",
-    desc: "Scaling strategies for serious traders and building a resilient portfolio approach.",
-  },
+ 
 ];
 
 export default function Courses() {
