@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import akash from '../../public/images/Aakash dada nd Gargi didi.png';
+import Image from "next/image";
 
 type Trainer = {
   id: string;
@@ -109,7 +111,10 @@ export default function Trainers() {
                 style={{ borderLeft: isEven ? undefined : "4px solid #FFCF25", borderRight: isEven ? "4px solid #FFCF25" : undefined }}
               >
                 <div className={`md:w-1/2 w-full overflow-hidden ${imgSlide} transition-all duration-700`} style={prefersReducedMotion ? { transition: "none" } : undefined}>
-                  <img src={t.image} alt={t.name} className="w-full h-auto object-cover" />
+                <Image src={akash} alt="Akash and Gargi" className="w-full h-auto object-cover" width={100} height={100}/> {/* Image component use karav laagel hya paddhatine*/}
+                  {/* <img src={`${akash}`} alt={t.name} className="w-full h-auto object-cover" /> regular html element use naahi honar  ithe
+                  */}  
+
                 </div>
 
                 <div className={`md:w-1/2 w-full ${infoSlide} transition-all duration-700`} style={prefersReducedMotion ? { transition: "none" } : undefined}>
